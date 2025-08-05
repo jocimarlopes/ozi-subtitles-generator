@@ -1,11 +1,21 @@
-from services import AudioGetter, AudioTranscriber, Menu
+import threading
+from services import AudioGetter, AudioTranscriber, GUI, Helpers
 
 class Main:
-    def run(self):
-        video_path = Menu().get_video_path()
+    def __init__(self, gui):
+        self.gui = gui
+        
+    def run(self, video_path, language):
         audio_file = AudioGetter(video_path).get_audio()
-        AudioTranscriber(audio_file).transcribe()
-        print("Process completed successfully.")
+        srt_path = AudioTranscriber(audio_file, language, video_path).transcribe()
+        self.gui.set_buttons_enabled(True)
+        AudioGetter.delete_temp_audio_file(audio_file)
+        print("===============\nProcess completed successfully\n===============\n")
+        Helpers.open_file_folder(srt_path)
+
 
 if __name__ == "__main__":
-    Main().run()
+    gui = GUI()
+    main = Main(gui)
+    gui.set_generate_callback(lambda path, lang: threading.Thread(target=main.run, args=(path, lang), daemon=True).start())
+    gui.run()

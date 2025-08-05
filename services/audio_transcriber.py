@@ -1,9 +1,11 @@
 import whisper
 
 class AudioTranscriber:
-    def __init__(self, audio_path: str):
+    def __init__(self, audio_path: str, language: str = "pt", video_path: str = None):
         self.model = whisper.load_model("medium")  # pode usar 'small', 'medium' ou 'large'
         self.audio_path = audio_path
+        self.video_path = video_path
+        self.language = language
 
     def transcribe(self):
         print("Transcribing audio to subtitles...")
@@ -15,9 +17,13 @@ class AudioTranscriber:
 
     def _transcribe_audio(self):
         try:
+            import os
             audio_path = self.audio_path
-            FINAL_PATH = 'subtitles/' + audio_path.split("/")[-1].replace(".wav", ".srt")
-            result = self.model.transcribe(audio_path, task="transcribe", language="pt", verbose=True)
+            video_path = os.path.basename(self.video_path)
+            video_directory = os.path.dirname(self.video_path)
+            srt_filename = os.path.basename(video_path).replace(".mp4", ".srt")
+            FINAL_PATH = os.path.join(video_directory, srt_filename)
+            result = self.model.transcribe(audio_path, task="transcribe", language=self.language, verbose=True)
             # Salvar como SRT
             with open(FINAL_PATH, "w", encoding="utf-8") as f:
                 for i, segment in enumerate(result["segments"], start=1):

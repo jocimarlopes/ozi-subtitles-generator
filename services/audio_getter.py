@@ -1,4 +1,6 @@
 from moviepy import VideoFileClip
+import tempfile
+import os
 
 class AudioGetter:
     def __init__(self, video_path: str):
@@ -12,13 +14,25 @@ class AudioGetter:
             exit(1)
         return audio_file
 
-    def _get_audio_from_video(self): 
-        try: 
+    def _get_audio_from_video(self):
+        try:
             video_path = self.video_path
             video = VideoFileClip(video_path)
-            audio_path = 'audios/' + video_path.split("/")[-1].replace(".mp4", ".wav")
-            video.audio.write_audiofile(audio_path)
-            return audio_path
+
+            # Save to temporary WAV file
+            temp_file = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
+            temp_audio_path = temp_file.name
+            temp_file.close()
+
+            video.audio.write_audiofile(temp_audio_path)
+            return temp_audio_path  # temporary file path for use with Whisper
         except Exception as e:
             print(f"Error: {e}")
             return None
+
+    def delete_temp_audio_file(file_path: str):
+        try:
+            os.remove(file_path)
+            print(f"Temporary audio file deleted: {file_path}")
+        except Exception as e:
+            print(f"Error deleting temporary audio file: {e}")
