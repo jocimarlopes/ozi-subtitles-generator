@@ -1,5 +1,5 @@
 import threading
-from services import AudioGetter, AudioTranscriber, GUI, Helpers
+from services import AudioGetter, AudioTranscriber, GUI, Helpers, FFMPEGVerify
 
 class Main:
     def __init__(self, gui):
@@ -15,6 +15,7 @@ class Main:
 
 
 if __name__ == "__main__":
+    FFMPEGVerify().verify()
     gui = GUI()
     main = Main(gui)
     gui.set_generate_callback(lambda path, lang: threading.Thread(target=main.run, args=(path, lang), daemon=True).start())

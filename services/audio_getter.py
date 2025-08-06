@@ -1,6 +1,7 @@
 from moviepy import VideoFileClip
 import tempfile
 import os
+from services.helpers import Helpers
 
 class AudioGetter:
     def __init__(self, video_path: str):
@@ -11,7 +12,7 @@ class AudioGetter:
         audio_file = self._get_audio_from_video()
         if not audio_file:
             print("Failed to extract audio from video.")
-            exit(1)
+            Helpers.exit()
         return audio_file
 
     def _get_audio_from_video(self):

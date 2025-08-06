@@ -1,8 +1,9 @@
 import whisper
+from services.helpers import Helpers
 
 class AudioTranscriber:
     def __init__(self, audio_path: str, language: str = "pt", video_path: str = None):
-        self.model = whisper.load_model("medium")  # pode usar 'small', 'medium' ou 'large'
+        self.model = whisper.load_model("small")  # pode usar 'small', 'medium' ou 'large'
         self.audio_path = audio_path
         self.video_path = video_path
         self.language = language
@@ -12,7 +13,7 @@ class AudioTranscriber:
         subtitles_file = self._transcribe_audio()
         if not subtitles_file:
             print("Failed to transcribe audio.")
-            exit(1)
+            Helpers.exit()
         return subtitles_file
 
     def _transcribe_audio(self):
@@ -23,6 +24,7 @@ class AudioTranscriber:
             video_directory = os.path.dirname(self.video_path)
             srt_filename = os.path.basename(video_path).replace(".mp4", ".srt")
             FINAL_PATH = os.path.join(video_directory, srt_filename)
+            print('\n\nSetting/Downloading AI model... Wait a moment.\n\n')
             result = self.model.transcribe(audio_path, task="transcribe", language=self.language, verbose=True)
             # Salvar como SRT
             with open(FINAL_PATH, "w", encoding="utf-8") as f:

@@ -11,3 +11,4 @@ dist/
 build/
 *.dmg
 *.spec
+whisper_models/*.pt

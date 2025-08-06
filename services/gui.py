@@ -1,10 +1,10 @@
 import sys
 from PySide6.QtWidgets import (
     QApplication, QWidget, QLabel, QVBoxLayout, QPushButton,
-    QFileDialog, QComboBox, QHBoxLayout, QSizePolicy, QMessageBox, QTextEdit
+    QFileDialog, QComboBox, QHBoxLayout, QSizePolicy, QMessageBox, QTextEdit,
 )
 from PySide6.QtCore import Qt, QObject, Signal, QMetaObject
-
+from PySide6.QtGui import QTextCursor
 class EmittingStream(QObject):
     text_written = Signal(str)
 
@@ -77,6 +77,11 @@ class GUI:
         self.log_output.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.layout.addWidget(self.log_output)
 
+        self.stdout_stream = EmittingStream()
+        self.stdout_stream.text_written.connect(self.append_log)
+        sys.stdout = self.stdout_stream
+        sys.stderr = self.stdout_stream
+
         # Credits
         credits = QLabel("Created by Jocimar Lopes • Jolo Systems")
         credits.setAlignment(Qt.AlignCenter)
@@ -84,12 +89,12 @@ class GUI:
         credits.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.layout.addWidget(credits)
 
-        self.stdout_stream = EmittingStream()
-        self.stdout_stream.text_written.connect(self.log_output.insertPlainText)
-        sys.stdout = self.stdout_stream
-        sys.stderr = self.stdout_stream
-
         self.window.setLayout(self.layout)
+
+    def append_log(self, text):
+        self.log_output.moveCursor(QTextCursor.End)
+        self.log_output.insertPlainText(text)
+        self.log_output.moveCursor(QTextCursor.End)
 
     def run(self):
         self.window.show()
