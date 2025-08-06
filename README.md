@@ -46,9 +46,7 @@ Developed in Python, it's ideal for creators, editors, or anyone who wants to su
 
 This will:
 
-- Create the required folders: `videos/`, `audios/`, and `subtitles/`  
 - Install the necessary Python packages (from `requirements.txt`)  
-- Automatically download the Whisper model  
 
 ---
 
@@ -60,7 +58,7 @@ To run the program:
 python app.py
 ```
 
-You’ll see a menu with available videos. Just select one by index and Ozi will do the rest.
+You’ll see a User Interface, just select the MP4, the language to substitle, Generate Now! And Ozi will do the rest.
 
 ---
 
@@ -71,12 +69,14 @@ project/
 ├── app.py  
 ├── setup.py  
 ├── requirements.txt  
-├── videos/  
-├── audios/  
-├── subtitles/  
+├── icons/  
+│   ├── *.png  
+│   ├── *.icns  
 ├── services/  
 │   ├── __init__.py  
 │   ├── menu.py  
+│   ├── gui.py  
+│   ├── helpers.py  
 │   ├── audio_getter.py  
 │   └── audio_transcriber.py  
 ```
