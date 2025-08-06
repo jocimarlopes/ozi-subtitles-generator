@@ -8,10 +8,8 @@ Developed in Python, it's ideal for creators, editors, or anyone who wants to su
 
 ## 📦 Features
 
-- List available `.mp4` videos  
-- Detect if a subtitle already exists for each video  
-- Extract audio from videos  
-- Transcribe audio using Whisper AI  
+- Transcribe audio from MP4 using Whisper AI
+- Select the subtitles language (EN, PT, ES, FR)
 - Save subtitles in `.srt` format  
 
 ---
