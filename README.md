@@ -90,4 +90,4 @@ MIT License
 ## 👤 Author
 
 **Jocimar Lopes**  
-Developed by **Jolo Systems** 🚀
+Developed by **Jocimar Lopes** 🚀
