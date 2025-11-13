@@ -11,6 +11,23 @@ class FFMPEGVerify:
     def verify(self):
         return self._verify_ffmpeg_installed()
 
+    def verify_system_paths(system):
+        paths = {
+            'Darwin': [
+                "/opt/homebrew/bin",
+                "/usr/local/bin"
+            ],
+            'Windows': [
+                "C:\\ffmpeg\\bin",
+                "C:\\Program Files\\ffmpeg\\bin"
+            ],
+            'Linux': [
+                "/usr/bin",
+                "/usr/local/bin"
+            ]
+        }
+        return paths[system]
+
     def _verify_ffmpeg_installed(self):
         if shutil.which("ffmpeg"):
             return  # ffmpeg já está acessível no PATH
@@ -18,22 +35,7 @@ class FFMPEGVerify:
         system = platform.system()
         possible_paths = []
 
-        if system == "Darwin":  # macOS (Homebrew)
-            possible_paths = [
-                "/opt/homebrew/bin",
-                "/usr/local/bin"
-            ]
-        elif system == "Windows":
-            # Tenta caminhos padrão de instalação no Windows
-            possible_paths = [
-                "C:\\ffmpeg\\bin",
-                "C:\\Program Files\\ffmpeg\\bin"
-            ]
-        elif system == "Linux":
-            possible_paths = [
-                "/usr/bin",
-                "/usr/local/bin"
-            ]
+        possible_paths = verify_system_paths(system)
 
         for path in possible_paths:
             ffmpeg_path = os.path.join(path, "ffmpeg")
