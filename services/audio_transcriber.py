@@ -3,7 +3,7 @@ from services.helpers import Helpers
 
 class AudioTranscriber:
     def __init__(self, audio_path: str, language: str = "pt", video_path: str = None):
-        self.model = whisper.load_model("small")  # pode usar 'small', 'medium' ou 'large'
+        self.model = whisper.load_model("medium")  # pode usar 'small', 'medium' ou 'large'
         self.audio_path = audio_path
         self.video_path = video_path
         self.language = language
